@@ -19,7 +19,7 @@ pub enum Event<'a> {
 }
 
 impl<'a> Event<'a> {
-    pub fn close_self(self) -> Event<'a> {
+    pub fn closed(self) -> Event<'a> {
         if let Event::StartTag { name, attrs, .. } = self {
             Event::StartTag {
                 name: name,

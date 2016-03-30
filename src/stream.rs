@@ -42,7 +42,7 @@ mod tests {
             start_tag!("small"),
             text!("world"),
             end_tag!("small"),
-            start_tag!("img", src="foo-link").close_self(),
+            start_tag!("img", src="foo-link").closed(),
             end_tag!("h1"),
         ];
 
