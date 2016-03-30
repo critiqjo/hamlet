@@ -1,18 +1,13 @@
 use std::fmt;
 
-enum EscOp<'a> {
-    Map(&'a str),
-    Id,
-}
-
-fn escape_char<'a>(c: char) -> EscOp<'a> {
+fn escape_char<'a>(c: char) -> Option<&'a str> {
     match c {
-        '<' => EscOp::Map("&lt;"),
-        '>' => EscOp::Map("&gt;"),
-        '"' => EscOp::Map("&quot;"),
-        '\'' => EscOp::Map("&apos;"),
-        '&' => EscOp::Map("&amp;"),
-        _ => EscOp::Id,
+        '<' => Some("&lt;"),
+        '>' => Some("&gt;"),
+        '"' => Some("&quot;"),
+        '\'' => Some("&apos;"),
+        '&' => Some("&amp;"),
+        _ => None,
     }
 }
 
@@ -23,7 +18,7 @@ impl<T: AsRef<str>> fmt::Display for Escaped<T> {
         let mut last = 0;
         let s = self.0.as_ref();
         for (i, c) in s.chars().enumerate() {
-            if let EscOp::Map(esc) = escape_char(c) {
+            if let Some(esc) = escape_char(c) {
                 try!(f.write_str(&s[last..i]));
                 try!(f.write_str(&esc));
                 last = i + 1;
